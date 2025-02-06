@@ -1,0 +1,51 @@
+version: 1
+
+task:
+  num_classes: 7
+  id_to_name:
+    1: "apo-ferritin"
+    2: "beta-amylase"
+    3: "beta-galactosidase"
+    4: "ribosome" 
+    5: "thyroglobulin"
+    6: "virus-like-particle"
+  num_samples: 24
+ 
+pretrain:
+
+  val_ids: ['TS_5_4', 'TS_6_4', 'TS_69_2', 'TS_6_6', 'TS_73_6', 'TS_86_3', 'TS_99_9']
+  val_data_dir: ./data/train
+
+  synthetic_ids: ["TS_0", "TS_1", "TS_10", "TS_11", "TS_12", "TS_13"]
+  synthetic_data_dir: ./data/synthetic-data
+
+  patch_size: 128
+
+model:
+  spatial_dims: 3
+  in_channels: 1
+  out_channels: 7
+  channels: [32, 64, 128, 128]
+  strides: [2, 2, 1]
+  num_res_units: 1  # Increased residual units
+  dropout: 0.3
+
+
+train:
+  num_epochs: 128
+  batch_size: 1
+  num_workers: 0
+
+validation:
+  batch_size: 24
+  num_workers: 0
+
+optimizer:
+  lr: 1e-3
+  patience: 30
+
+logging:
+  dir: ./logs
+
+checkpoints:
+  dir: ./checkpoints
