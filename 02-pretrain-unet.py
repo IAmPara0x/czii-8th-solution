@@ -83,6 +83,7 @@ if __name__ == "__main__":
     
 
     cfg = get_cfg("config.yml")
+    seed_everything(cfg.task.seed)
     
     data_list = load_data(cfg)
 

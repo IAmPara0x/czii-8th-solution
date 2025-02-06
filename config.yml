@@ -9,7 +9,8 @@ task:
     4: "ribosome" 
     5: "thyroglobulin"
     6: "virus-like-particle"
-  num_samples: 24
+  seed: 42
+  # num_samples: 24
  
 pretrain:
 
@@ -25,24 +26,24 @@ model:
   spatial_dims: 3
   in_channels: 1
   out_channels: 7
-  channels: [32, 64, 128, 128]
-  strides: [2, 2, 1]
-  num_res_units: 1  # Increased residual units
-  dropout: 0.3
+#   channels: [32, 64, 128, 128]
+#   strides: [2, 2, 1]
+#   num_res_units: 1  # Increased residual units
+#   dropout: 0.3
 
 
 train:
-  num_epochs: 128
+  # num_epochs: 128
   batch_size: 1
   num_workers: 0
 
 validation:
-  batch_size: 24
+  # batch_size: 24
   num_workers: 0
 
 optimizer:
   lr: 1e-3
-  patience: 30
+  # patience: 30
 
 logging:
   dir: ./logs
