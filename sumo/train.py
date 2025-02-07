@@ -456,9 +456,10 @@ def main(config_name: str, val: str):
     )
 
     # Initialize ModelCheckpoint to monitor "val_dice_mean" and save the best model
+    this_file_dir = Path(__file__).parent
     checkpoint_callback = ModelCheckpoint(
         monitor="val_loss",  # Metric to monitor
-        dirpath=config.checkpoint_dir_name,  # Directory to save checkpoints
+        dirpath=str((this_file_dir / config.checkpoint_dir_name).resolve().absolute()),  # Directory to save checkpoints
         filename=val + "-best-checkpoint-{epoch:02d}-{val_dice_mean:.4f}-{val_loss:.4f}",  # Checkpoint filename format
         save_top_k=1,  # Save only the best model
         mode="min",  # "min" because lower "val_loss" is better
