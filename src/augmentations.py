@@ -18,7 +18,7 @@ def get_random_transforms(cfg):
            RandCropByLabelClassesd(
                 keys=["image", "label"],
                 label_key="label",
-                spatial_size= [cfg.pretrain.patch_size, cfg.pretrain.patch_size, cfg.pretrain.patch_size],
+                spatial_size= [cfg.task.patch_size, cfg.task.patch_size, cfg.task.patch_size],
                 num_classes=cfg.task.num_classes,
                 num_samples=cfg.task.num_samples,
             ),

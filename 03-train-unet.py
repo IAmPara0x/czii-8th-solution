@@ -5,16 +5,19 @@ import torch
 import os
 
 from typing import List
-from monai.data import MetaTensor
+from monai.data.meta_tensor import MetaTensor
 
 from src.utils import *
 from src.augmentations import *
 
-from monai.data import DataLoader, Dataset, CacheDataset, decollate_batch
+from monai.data.dataloader import DataLoader
+from monai.data.dataset import Dataset, CacheDataset
 from src.callbacks import get_callbacks
 from src.model import UNetModel
 
 import lightning.pytorch as pl
+
+from omegaconf import OmegaConf
 
 
 torch.serialization.add_safe_globals([MetaTensor])
@@ -24,13 +27,12 @@ torch.set_float32_matmul_precision('medium')
 def load_data(cfg) -> List[dict]:
     data_list = []
     
-    for i in cfg.pretrain.val_ids:
-        print(i)
+    for i in (cfg.train.val_ids + cfg.train.train_ids):
         tomo_types = ["denoised", "ctfdeconvolved", "isonetcorrected"]
         for tomo_type in tomo_types:
             # Load the original image and label
-            image_path = os.path.join(cfg.pretrain.val_data_dir, f"train_image_{i}_{tomo_type}.npy")
-            label_path = os.path.join(cfg.pretrain.val_data_dir, f"train_label_{i}_{tomo_type}.npy")
+            image_path = os.path.join(cfg.train.data_dir, f"train_image_{i}_{tomo_type}.npy")
+            label_path = os.path.join(cfg.train.data_dir, f"train_label_{i}_{tomo_type}.npy")
             
             if not os.path.exists(image_path):
                 raise FileNotFoundError(f"Image file not found: {image_path}")
@@ -52,43 +54,20 @@ def load_data(cfg) -> List[dict]:
 
 
 
-def load_data_old(cfg) -> List[dict]:
-    data_list = []
-    
-    for i in cfg.pretrain.synthetic_ids:
-        print(i)
-        # Load the original image and label
-        image_path = os.path.join(cfg.pretrain.synthetic_data_dir, f"train_image_{i}.npy")
-        label_path = os.path.join(cfg.pretrain.synthetic_data_dir, f"train_label_{i}.npy")
-        
-        if not os.path.exists(image_path):
-            raise FileNotFoundError(f"Image file not found: {image_path}")
-        
-        image = np.load(image_path)
-        label = np.load(label_path).astype(np.int64)
-        
-        
-        print(f"Original Label {i}: dtype={label.dtype}, min={label.min()}, max={label.max()}, shape={label.shape}")
-        assert label.dtype in [np.int64, np.int32], f"Label {i} is not integer type."
-        assert label.min() >= 0 and label.max() < cfg.task.num_classes, f"Label {i} has values out of range."
-        
-        # Append with 'id'
-        data_list.append({"id": i, "image": image, "tomo_type": "denoised", "label": label})
-        
-                
-    return data_list
-
 
 if __name__ == "__main__":
 
+    experiments = ["TS_6_4", "TS_6_6", "TS_69_2", "TS_73_6", "TS_86_3", "TS_99_9", "TS_5_4"]
     
-
     cfg = get_cfg("config.yml")
-    seed_everything(cfg.task.seed)
+
+    cfg = OmegaConf.merge(cfg, OmegaConf.from_dotlist([f"train.train_ids={list(set(experiments) - set(cfg.train.val_ids))}"]))
+    print(OmegaConf.to_yaml(cfg))
     
+    seed_everything(cfg.task.seed)
+
     data_list = load_data(cfg)
 
-    data_list.extend(load_data_old(cfg))
     print(f"Total samples loaded: {len(data_list)}")
 
     # Initialize empty lists for train and validation
@@ -97,9 +76,9 @@ if __name__ == "__main__":
 
     # Iterate over data_list and distribute items accordingly
     for d in data_list:
-        if d['id'] not in cfg.pretrain.val_ids and d["tomo_type"] == "denoised":
+        if d['id'] not in cfg.train.val_ids and (cfg.train.use_other_tomos or d["tomo_type"] == "denoised"):
             train_files.append(d)
-        elif d['id'] in cfg.pretrain.val_ids and d["tomo_type"] == "denoised":
+        elif d['id'] in cfg.train.val_ids and d["tomo_type"] == "denoised":
             val_files.append(d)
 
     # Clear data_list to free memory
@@ -109,15 +88,16 @@ if __name__ == "__main__":
     print(f"Number of validation samples: {len(val_files)}")
     print("Training IDs:", [d['id'] for d in train_files])
     print("Validation IDs:", [d['id'] for d in val_files])
-
-
-        # Create training dataset with non-random transforms cached
+    
+   
+    # Create training dataset with non-random transforms cached
     raw_train_ds = CacheDataset(data=train_files, transform=non_random_transforms, cache_rate=0)
-
+  
     # Apply random transforms for data augmentation
     random_transforms = get_random_transforms(cfg)
     train_ds = Dataset(data=raw_train_ds, transform=random_transforms)
     del raw_train_ds
+
     # Create DataLoader for training
     train_loader = DataLoader(
         train_ds,
@@ -152,7 +132,10 @@ if __name__ == "__main__":
 
     logger, callbacks = get_callbacks(cfg)
 
-    model = UNetModel(cfg)
+    if cfg.train.pretrain_ckpt:
+        model = UNetModel.load_from_checkpoint(cfg.train.pretrain_ckpt,cfg=cfg)
+    else:
+        model = UNetModel(cfg)
 
     trainer = pl.Trainer(
         max_epochs=cfg.train.num_epochs,

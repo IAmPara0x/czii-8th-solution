@@ -1,16 +1,10 @@
 #!/usr/bin/env python
 
-import copick
+
 import fileinput
 import json
-import matplotlib.pyplot as plt
-import numpy as np
 import os
-import shutil
-import zarr
-
 from glob import glob
-from tqdm import tqdm
 from scipy.ndimage import gaussian_filter, median_filter
 
 def ndjson_to_pick(run, particle, src_path, dest_path):
