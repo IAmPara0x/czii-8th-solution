@@ -337,6 +337,7 @@ class Config:
     load_from_checkpoint: str | None  # if given, training will resume from this checkpoint
 
     ids: list[str]  # ids for all tomograms (train + validation)
+    checkpoint_dir_name: str
 
 
 def load_config(config_name: str) -> Config:
@@ -359,6 +360,7 @@ def load_config(config_name: str) -> Config:
         patience=config_yaml["patience"],
         ids=config_yaml["ids"],
         load_from_checkpoint=config_yaml["load_from_checkpoint"],
+        checkpoint_dir_name=config_yaml["checkpoint_dir_name"],
     )
     return config
 
@@ -456,14 +458,14 @@ def main(config_name: str, val: str):
     # Initialize ModelCheckpoint to monitor "val_dice_mean" and save the best model
     checkpoint_callback = ModelCheckpoint(
         monitor="val_loss",  # Metric to monitor
-        dirpath="checkpoints",  # Directory to save checkpoints
-        filename="_".join(val) + "-best-checkpoint-{epoch:02d}-{val_dice_mean:.4f}-{val_loss:.4f}",  # Checkpoint filename format
-        save_top_k=2,  # Save only the best model
+        dirpath=config.checkpoint_dir_name,  # Directory to save checkpoints
+        filename=val + "-best-checkpoint-{epoch:02d}-{val_dice_mean:.4f}-{val_loss:.4f}",  # Checkpoint filename format
+        save_top_k=1,  # Save only the best model
         mode="min",  # "min" because lower "val_loss" is better
         verbose=True,  # Verbosity
     )
 
-    logger = WandbLogger("sergio_unets_" + "_".join(val))
+    logger = WandbLogger("sergio_unets_" + val)
 
     # Initialize callbacks
     early_stopping = EarlyStopping(

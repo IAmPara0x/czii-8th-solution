@@ -14,7 +14,9 @@ batch_size_train: 1
 batch_size_valid: 2
 num_workers: 1
 patience: 100
-load_from_checkpoint: ""  # NOTE: add the checkpoint path here
+#load_from_checkpoint: "/home/clay/research/kaggle/czii-8th-solution/T_S___0-best-checkpoint-epoch=385-val_dice_mean=0.5779-val_loss=0.5731.ckpt"  # NOTE: add the checkpoint path here
+load_from_checkpoint: "/home/clay/research/kaggle/kaggle_czii/data/deeper-2-model-weight/TS_0-best-checkpoint-epoch=259-val_dice_mean=0.5822-val_loss=0.5726.ckpt"
+checkpoint_dir_name: "checkpoint_finetune_denoised"
 
 ids:
   - "TS_5_4"

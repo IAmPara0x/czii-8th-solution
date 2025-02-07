@@ -15,6 +15,7 @@ batch_size_valid: 2
 num_workers: 1
 patience: 100
 load_from_checkpoint: null
+checkpoint_dir_name: "checkpoint_pretraining"
 
 ids:
   - "TS_0"
