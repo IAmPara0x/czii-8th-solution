@@ -18,6 +18,7 @@ from src.model import UNetModel
 import lightning.pytorch as pl
 
 from omegaconf import OmegaConf
+import glob
 
 
 torch.serialization.add_safe_globals([MetaTensor])
@@ -132,8 +133,10 @@ if __name__ == "__main__":
 
     logger, callbacks = get_callbacks(cfg)
 
-    if cfg.train.pretrain_ckpt:
-        model = UNetModel.load_from_checkpoint(cfg.train.pretrain_ckpt,cfg=cfg)
+    if cfg.train.use_pretrain:
+        pretrain_models_ckpts = glob.glob(os.path.join(cfg.checkpoints.dir, f"pretrain*"))
+        model = UNetModel.load_from_checkpoint(select_model(pretrain_models_ckpts, target='val_loss'),cfg=cfg)
+        print(select_model(pretrain_models_ckpts, target='val_loss'))
     else:
         model = UNetModel(cfg)
 

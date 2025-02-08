@@ -12,6 +12,7 @@ task:
   seed: 42
   # num_samples: 24
   patch_size: 128
+  experiments: ["TS_6_4", "TS_6_6", "TS_69_2", "TS_73_6", "TS_86_3", "TS_99_9", "TS_5_4"]
  
 pretrain:
 

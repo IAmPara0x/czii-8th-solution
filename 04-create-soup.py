@@ -6,8 +6,12 @@ from omegaconf import OmegaConf
 from collections import OrderedDict
 import torch
 
+from src.model import UNetModel
 from src.utils import *
 from src.augmentations import *
+import os
+
+import glob 
 
 torch.serialization.add_safe_globals([MetaTensor])
 torch.set_float32_matmul_precision('medium')
@@ -50,5 +54,17 @@ if __name__ == "__main__":
 
     cfg = get_cfg("config.yml")
     print(OmegaConf.to_yaml(cfg))
-
+    #
     seed_everything(cfg.task.seed)
+
+    best_fold_models_ckpts = []
+
+    for exp in cfg.task.experiments:
+        fold_models = glob.glob(os.path.join(cfg.checkpoints.dir, f"fold_{exp}*"))
+        best_fold_models_ckpts.append(select_model(fold_models, target=cfg.soup.select_strategy))
+
+
+    best_fold_models = [UNetModel.load_from_checkpoint(ckpt, cfg=cfg) for ckpt in best_fold_models_ckpts]
+    soup_model = model_soup(best_fold_models) 
+
+    torch.save(soup_model.state_dict(), os.path.join(cfg.checkpoints.dir, f"{cfg.version}.pth") )

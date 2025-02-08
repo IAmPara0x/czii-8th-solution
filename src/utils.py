@@ -2,6 +2,7 @@ import argparse
 from omegaconf import OmegaConf
 import numpy as np
 import pandas as pd
+import re
 
 # Define dotdict for easy attribute access
 class dotdict(dict):
@@ -139,3 +140,25 @@ def extract_3d_patches_minimal_overlap(
     
     return patches, coordinates
 
+
+def select_model(model_ckpt_paths, target='dice_score'):
+
+    assert target in ['dice_score', 'val_loss']
+
+    model_scores = {}
+
+    for model_ckpt_path in model_ckpt_paths:
+        pattern = r"val_dice_mean=(\d\.[\d]+)-val_loss=(\d\.[\d]+)"
+
+        match = re.search(pattern, model_ckpt_path)
+        
+        if match:
+            dice_mean = float(match.group(1))
+            val_loss = float(match.group(2))
+            model_scores[model_ckpt_path] = {"dice_score": dice_mean, "val_loss": val_loss}
+
+    
+    if target == 'dice_score':
+        return max(model_scores.items(), key=lambda item: item[1]["dice_score"])[0]
+
+    return min(model_scores.items(), key=lambda item: item[1]["val_loss"])[0]
