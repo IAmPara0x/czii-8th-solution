@@ -334,7 +334,7 @@ class Config:
     batch_size_valid: int  # batch size for validation
     num_workers: int  # number of dataloader workers
     patience: int  # patience for early stopping
-    load_from_checkpoint: str | None  # if given, training will resume from this checkpoint
+    load_from_checkpoint_dir: str | None  # if given, training will resume from this checkpoint
 
     ids: list[str]  # ids for all tomograms (train + validation)
     checkpoint_dir_name: str
@@ -359,7 +359,7 @@ def load_config(config_name: str) -> Config:
         num_workers=config_yaml["num_workers"],
         patience=config_yaml["patience"],
         ids=config_yaml["ids"],
-        load_from_checkpoint=config_yaml["load_from_checkpoint"],
+        load_from_checkpoint_dir=config_yaml["load_from_checkpoint_dir"],
         checkpoint_dir_name=config_yaml["checkpoint_dir_name"],
     )
     return config
@@ -480,15 +480,19 @@ def main(config_name: str, val: str):
     )
     lr_monitor = LearningRateMonitor(logging_interval="epoch")
 
-    if config.load_from_checkpoint is not None:
-        print(f"{config.load_from_checkpoint=}, resuming")
-        model: UNetModel = UNetModel.load_from_checkpoint(
-            config.load_from_checkpoint,
+    if config.load_from_checkpoint_dir is not None:
+        load_from_checkpoint_dir = Path(config.load_from_checkpoint_dir)
+        checkpoint_paths = list(load_from_checkpoint_dir.glob("*"))
+        assert len(checkpoint_paths) == 1, f"number of checkpoints in {load_from_checkpoint_dir} is not 1: {checkpoint_paths=}"
+        checkpoint_path = checkpoint_paths[0]
+        print(f"{config.load_from_checkpoint_dir=}, resuming on {checkpoint_path=}")
+        model: UNetModel = UNetModel.load_from_checkpoint_dir(
+            checkpoint_path,
             strict=False,
         )
         model.model = deepcopy(model.ema_model.module)  # so that the model's weight is initialised based off of the pretrained model's weight
     else:
-        print(f"{config.load_from_checkpoint=}, training from scratch")
+        print(f"{config.load_from_checkpoint_dir=}, training from scratch")
         model = UNetModel(
             # this is the model_config_five in the submission
             spatial_dims=3,
