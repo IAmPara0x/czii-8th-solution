@@ -15,7 +15,7 @@ from src.callbacks import get_callbacks
 from src.model import UNetModel
 
 import lightning.pytorch as pl
-
+import json
 
 torch.serialization.add_safe_globals([MetaTensor])
 torch.set_float32_matmul_precision('medium')
@@ -26,7 +26,7 @@ def load_data(cfg) -> List[dict]:
     
     for i in cfg.pretrain.val_ids:
         print(i)
-        tomo_types = ["denoised", "ctfdeconvolved", "isonetcorrected"]
+        tomo_types = ["denoised"]
         for tomo_type in tomo_types:
             # Load the original image and label
             image_path = os.path.join(cfg.pretrain.val_data_dir, f"train_image_{i}_{tomo_type}.npy")
@@ -84,6 +84,9 @@ if __name__ == "__main__":
     
 
     cfg = get_cfg("config.yml")
+
+    print(f"pretraining unet: {json.dumps(OmegaConf.to_container(cfg, resolve=True), indent=4)}")
+
     seed_everything(cfg.task.seed)
     
     data_list = load_data(cfg)
