@@ -11,15 +11,20 @@ def get_callbacks(cfg):
         dirpath=cfg.checkpoints.dir,      # Directory to save checkpoints
         filename=f'{cfg.version}'+'-{epoch:02d}-{val_dice_mean:.4f}-{val_loss:.4f}',  # Checkpoint filename format
         save_top_k=2,               # Save only the best model
-        mode='min',                 # 'max' because higher 'val_dice_mean' is better
+        mode='min',                 # 'min' because higher 'val_dice_mean' is better
         verbose=True                # Verbosity
     )
 
 
-    logger =  TensorBoardLogger(
-      save_dir=cfg.logging.dir,
-      name=f'{cfg.version}',
-      version=0
+    # TODO(Sumo): remove hack
+    # logger =  TensorBoardLogger(
+    #   save_dir=cfg.logging.dir,
+    #   name=f'{cfg.version}',
+    #   version=0
+    # )
+    from lightning.pytorch.loggers import WandbLogger
+    logger = WandbLogger(
+        "sergio_unets_" + "_".join(cfg.pretrain.val_ids)
     )
 
     # Initialize callbacks
