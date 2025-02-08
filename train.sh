@@ -24,7 +24,24 @@ done
 
 BIG_MODEL_FOLDS=('TS_69_2' 'TS_86_3' 'TS_99_9')
 # 384 unets pretrain
-python ./02-pretrain-unet.py model.channels="[32, 96, 256, 384]" model.strides="[2, 2, 1]" model.num_res_units=2 model.dropout=0.2 train.num_epochs=2000 validation.batch_size=24 task.num_samples=24 optimizer.patience=30 version="pretrain" checkpoints.dir="./checkpoints/big-unet" logs.dir="./logs/big-unet" train.use_ema=true
+python ./02-pretrain-unet.py \
+  model.channels="[32, 96, 256, 384]" \
+  model.strides="[2, 2, 1]" \
+  model.num_res_units=2 \
+  model.dropout=0.2 \
+  train.num_epochs=2000 \
+  validation.batch_size=24 \
+  task.num_samples=16 \
+  optimizer.patience=30 \
+  version="pretrain" \
+  pretrain.synthetic_ids="['TS_0', 'TS_1', 'TS_2', 'TS_3', 'TS_4', 'TS_5', 'TS_6', 'TS_7', 'TS_8', 'TS_9', 'TS_10', 'TS_11', 'TS_12', 'TS_13', 'TS_14', 'TS_15', 'TS_16', 'TS_17', 'TS_18', 'TS_19', 'TS_20', 'TS_21', 'TS_22', 'TS_23', 'TS_24', 'TS_25', 'TS_26']" \
+  pretrain.val_ids="['TS_0']" \
+  pretrain.val_data_dir="./data/synthetic-data" \
+  checkpoints.dir="./checkpoints/big-unet" \
+  logs.dir="./logs/big-unet" \
+  train.use_ema=true \
+  train.ema.momentum=0.01 \
+  train.ema.warmup=100
 
 # 384 unets train on 3 folds, denoised
 for FOLD in "${BIG_MODEL_FOLDS[@]}"; do
