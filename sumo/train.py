@@ -486,7 +486,7 @@ def main(config_name: str, val: str):
         assert len(checkpoint_paths) == 1, f"number of checkpoints in {load_from_checkpoint_dir} is not 1: {checkpoint_paths=}"
         checkpoint_path = checkpoint_paths[0]
         print(f"{config.load_from_checkpoint_dir=}, resuming on {checkpoint_path=}")
-        model: UNetModel = UNetModel.load_from_checkpoint_dir(
+        model: UNetModel = UNetModel.load_from_checkpoint(
             checkpoint_path,
             strict=False,
         )
