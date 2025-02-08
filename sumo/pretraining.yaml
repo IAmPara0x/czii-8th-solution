@@ -1,0 +1,46 @@
+# Data
+train_data_dir: "/home/clay/research/kaggle/kaggle_czii/data/simulated-data-and-labes-syntetic"
+tomo_types:
+  - "denoised"
+
+# Patch Settings
+patch_size: 128
+num_classes: 7
+
+# Training hyperparameters
+learning_rate: 1e-3
+num_epochs: 2000
+batch_size_train: 1
+batch_size_valid: 2
+num_workers: 1
+patience: 100
+load_from_checkpoint: null
+
+ids:
+  - "TS_0"
+  - "TS_1"
+  - "TS_2"
+  - "TS_3"
+  - "TS_4"
+  - "TS_5"
+  - "TS_6"
+  - "TS_7"
+  - "TS_8"
+  - "TS_9"
+  - "TS_10"
+  - "TS_11"
+  - "TS_12"
+  - "TS_13"
+  - "TS_14"
+  - "TS_15"
+  - "TS_16"
+  - "TS_17"
+  - "TS_18"
+  - "TS_19"
+  - "TS_20"
+  - "TS_21"
+  - "TS_22"
+  - "TS_23"
+  - "TS_24"
+  - "TS_25"
+  - "TS_26"

@@ -43,7 +43,6 @@ connected-components-3d==3.22.0
 contourpy==1.3.1
 copick==0.8.0
 copick-utils @ git+https://github.com/copick/copick-utils.git@d72192abb2d18dcd0ff8caa749f2327cf24ce894
-cryoet_data_portal==4.2.1
 cucim-cu12==24.12.0
 cupy-cuda12x==13.3.0
 cycler==0.12.1

@@ -1,0 +1,26 @@
+# Data
+train_data_dir: "/home/clay/research/kaggle/kaggle_czii/data/create-exp-dataset-output"
+tomo_types:
+  - "denoised"
+
+# Patch Settings
+patch_size: 128
+num_classes: 7
+
+# Training hyperparameters
+learning_rate: 1e-3
+num_epochs: 2000
+batch_size_train: 1
+batch_size_valid: 2
+num_workers: 1
+patience: 100
+load_from_checkpoint: ""  # NOTE: add the checkpoint path here
+
+ids:
+  - "TS_5_4"
+  - "TS_6_4"
+  - "TS_69_2"
+  - "TS_6_6"
+  - "TS_73_6"
+  - "TS_86_3"
+  - "TS_99_9"
