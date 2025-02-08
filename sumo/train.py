@@ -374,7 +374,9 @@ def main(config_name: str, val: str):
     print(f"{config=}")
 
     # Load training data
-    data_list = load_data(config.train_data_dir, config.ids, config.tomo_types)
+    repo_dir = Path(__file__).parent.parent
+    train_data_dir = repo_dir / config.train_data_dir
+    data_list = load_data(str(train_data_dir), config.ids, config.tomo_types)
 
     print(f"Total samples loaded: {len(data_list)}")
 

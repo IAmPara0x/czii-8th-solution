@@ -1,5 +1,5 @@
 # Data
-train_data_dir: "/home/clay/research/kaggle/kaggle_czii/data/create-exp-dataset-output"
+train_data_dir: "data/train"
 tomo_types:
   - "denoised"
   - "ctfdeconvolved"

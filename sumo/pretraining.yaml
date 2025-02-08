@@ -1,5 +1,5 @@
-# Data
-train_data_dir: "/home/clay/research/kaggle/kaggle_czii/data/simulated-data-and-labes-syntetic"
+# Data, wrt. repository root
+train_data_dir: "data/synthetic-data"
 tomo_types:
   - "denoised"
 
@@ -13,7 +13,7 @@ num_epochs: 2000
 batch_size_train: 1
 batch_size_valid: 2
 num_workers: 1
-patience: 100
+patience: 30
 load_from_checkpoint: null
 checkpoint_dir_name: "checkpoint_pretraining"
 
