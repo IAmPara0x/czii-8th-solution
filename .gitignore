@@ -2,3 +2,7 @@ data/
 checkpoints/
 logs/
 src/__pycache__/*
+.idea/
+wandb/
+*.ckpt
+*.pth
