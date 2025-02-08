@@ -481,7 +481,7 @@ def main(config_name: str, val: str):
     lr_monitor = LearningRateMonitor(logging_interval="epoch")
 
     if config.load_from_checkpoint_dir is not None:
-        load_from_checkpoint_dir = Path(config.load_from_checkpoint_dir)
+        load_from_checkpoint_dir = this_file_dir / config.load_from_checkpoint_dir
         checkpoint_paths = list(load_from_checkpoint_dir.glob("*"))
         assert len(checkpoint_paths) == 1, f"number of checkpoints in {load_from_checkpoint_dir} is not 1: {checkpoint_paths=}"
         checkpoint_path = checkpoint_paths[0]
