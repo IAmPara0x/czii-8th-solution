@@ -1,7 +1,12 @@
+# version of the model
 version: 1
 
+# description of the training task
 task:
+  # number of classes for the model to classify, 0 is the background class
   num_classes: 7
+
+  # id of the class to their corresponding class name
   id_to_name:
     1: "apo-ferritin"
     2: "beta-amylase"
@@ -9,20 +14,31 @@ task:
     4: "ribosome" 
     5: "thyroglobulin"
     6: "virus-like-particle"
+
+  # training seed for reproducible training
   seed: 42
+
+  # "batch size": number of samples to draw from each tomogram, e.g. 24 means each tomogram will gives 24 crops for the model to train on
   # num_samples: 24
+
+  # size for each side of the cropped cube
   patch_size: 128
+
+  # experiments to use in the training process
   experiments: ["TS_6_4", "TS_6_6", "TS_69_2", "TS_73_6", "TS_86_3", "TS_99_9", "TS_5_4"]
  
+# this section is only used during the pretraining step
 pretrain:
-
+  # validation sets of the pretraining step
   val_ids: ['TS_5_4', 'TS_6_4', 'TS_69_2', 'TS_6_6', 'TS_73_6', 'TS_86_3', 'TS_99_9']
   val_data_dir: ./data/train
 
+  # synthetic dataset ids for the pretraining step
   synthetic_ids: ["TS_0", "TS_1", "TS_10", "TS_11", "TS_12", "TS_13"]
   synthetic_data_dir: ./data/synthetic-data
 
 
+# model definitions, this follows https://docs.monai.io/en/stable/networks.html#unet
 model:
   spatial_dims: 3
   in_channels: 1
@@ -33,24 +49,42 @@ model:
 #   dropout: 0.3
 
 
+# training hyperparameters
 train:
+  # max number of training epochs
   # num_epochs: 128
+
+  # number of tomograms to sample per batch, the final number of crops for each model's gradient step will be batch_size * num_samples
   batch_size: 1
+
+  # number of data loader workers
   num_workers: 0
+
+  # validation sets for the training process
   # val_ids: ['TS_5_4']
+
+  # data directory to read for the training process
   data_dir: ./data/train
+
+  # if provided, training will resume from that checkpoint
   pretrain_ckpt: null
 
 validation:
+  # validation dataloader batch size and number of workers
   # batch_size: 24
   num_workers: 0
 
 optimizer:
+  # AdamW learning rate
   lr: 1e-3
+
+  # patience for early stopping and the ReduceLROnPlateau scheduler
   # patience: 30
 
+# where to write logs to
 logging:
   dir: ./logs
 
+# where to write checkpoints to
 checkpoints:
   dir: ./checkpoints

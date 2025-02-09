@@ -51,3 +51,5 @@ all software dependencies are listed inside `requirements.txt`, we did not do an
 
 ---
 
+## Configuration Files
+- `config.yaml` is the base config for tiny and medium unet models. As there's a lot of field in there, please refer to the comments inside the config file to see what each field does
