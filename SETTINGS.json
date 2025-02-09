@@ -1,0 +1,11 @@
+{
+  "RAW_DATA_DIR": "./data/",
+  "REAL_EXPERIMENTS_DIR": "./data/train",
+  "SYNTHETIC_EXPERIMENTS_DIR": "./data/synthetic-data",
+  "MODEL_CHECKPOINT_DIR": {
+    "tiny-unet": "checkpoints/tiny-unet",
+    "medium-unet": "checkpoints/medium-unet",
+    "big-denoised-unet": "sumo/checkpoint_finetune_denoised",
+    "big-all-unet": "sumo/checkpoint_finetune_all"
+  }
+}
