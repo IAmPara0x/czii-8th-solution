@@ -3,9 +3,9 @@
 train_data_dir: "data/train"
 # tomogram types to load for this training process
 tomo_types:
-  - "denoised"
-  - "ctfdeconvolved"
-  - "isonetcorrected"
+  - "_denoised"
+  - "_ctfdeconvolved"
+  - "_isonetcorrected"
 
 # Patch Settings
 # patch size for each crop during the training process

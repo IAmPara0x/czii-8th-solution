@@ -65,7 +65,7 @@ def load_data(
     Parameters:
     - data_dir (str): Directory where the data files are stored.
     - is_augmented (bool): Whether to load augmented data.
-    - tomo_types (list[str]): types of tomograms to load, e.g. ["denoised", "ctfdeconvolved", "isonetcorrected"]
+    - tomo_types (list[str]): types of tomograms to load, e.g. ["_denoised", "_ctfdeconvolved", "_isonetcorrected"]
 
     Returns:
     - List[dict]: List of dictionaries with "id", "image", and "label" keys.
@@ -74,11 +74,10 @@ def load_data(
 
     for i in ids:
         print(i)
-        # tomo_types = ["denoised"]
         for tomo_type in tomo_types:
             # Load the original image and label
-            image_path = os.path.join(data_dir, f"train_image_{i}_{tomo_type}.npy")
-            label_path = os.path.join(data_dir, f"train_label_{i}_{tomo_type}.npy")
+            image_path = os.path.join(data_dir, f"train_image_{i}{tomo_type}.npy")
+            label_path = os.path.join(data_dir, f"train_label_{i}{tomo_type}.npy")
 
             if not os.path.exists(image_path):
                 raise FileNotFoundError(f"Image file not found: {image_path}")
