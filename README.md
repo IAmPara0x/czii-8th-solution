@@ -15,7 +15,7 @@ pip3 install -r requirements.txt
 #### Output Artifacts
 - tiny unet model soup = `checkpoints/tiny-unet/`
 - medium unet model soup = `checkpoints/medium-unet/`
-- big unet model soup on denoised tomograms = `sumo/checkpoint_finetune_all/checkpoint_finetune_denoised_soup.pth`
+- big unet model soup on denoised tomograms = `sumo/checkpoint_finetune_denoised/checkpoint_finetune_denoised_soup.pth`
 - big unet model soup on all tomograms= `sumo/checkpoint_finetune_all/checkpoint_finetune_all_soup.pth`
 
 #### Running this script does the following
