@@ -1,0 +1,52 @@
+# Data
+# the root directory for the dataset
+train_data_dir: "data/synthetic-data"
+# tomogram types to load for this training process
+tomo_types:
+  - "denoised"
+
+# Patch Settings
+# patch size for each crop during the training process
+patch_size: 128
+# number of classes for the model to predict
+num_classes: 7
+
+# Training hyperparameters
+learning_rate: 0.001  # AdamW learning rate
+num_epochs: 2000  # max number of epochs
+batch_size_train: 1  # number of tomograms to read on each training batch
+batch_size_valid: 2  # number of tomograms to read on each validation batch
+num_workers: 1  # dataloader number of workers
+patience: 30  # patience for early stopping and the ReduceLROnPlateau scheduler
+load_from_checkpoint: null  # if not null, training will resume from the checkpoint in that dir
+checkpoint_dir_name: "checkpoint_pretraining"  # where to write the trained checkpoints to
+
+# all train + validation data to load for this training process
+ids:
+  - "TS_0"
+  - "TS_1"
+  - "TS_2"
+  - "TS_3"
+  - "TS_4"
+  - "TS_5"
+  - "TS_6"
+  - "TS_7"
+  - "TS_8"
+  - "TS_9"
+  - "TS_10"
+  - "TS_11"
+  - "TS_12"
+  - "TS_13"
+  - "TS_14"
+  - "TS_15"
+  - "TS_16"
+  - "TS_17"
+  - "TS_18"
+  - "TS_19"
+  - "TS_20"
+  - "TS_21"
+  - "TS_22"
+  - "TS_23"
+  - "TS_24"
+  - "TS_25"
+  - "TS_26"
