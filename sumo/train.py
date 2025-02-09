@@ -7,7 +7,7 @@ import lightning.pytorch as pl
 import os
 
 import yaml
-from lightning.pytorch.loggers import WandbLogger
+from lightning.pytorch.loggers import TensorBoardLogger
 from lightning.pytorch.callbacks import LearningRateMonitor, EarlyStopping, ModelCheckpoint
 from pathlib import Path
 import torch.nn as nn
@@ -468,7 +468,10 @@ def main(config_name: str, val: str):
         verbose=True,  # Verbosity
     )
 
-    logger = WandbLogger("sergio_unets_" + val)
+    logger = TensorBoardLogger(
+        this_file_dir / ("sergio_unets_" + val),
+        "sergio_unets_" + val,
+    )
 
     # Initialize callbacks
     early_stopping = EarlyStopping(
