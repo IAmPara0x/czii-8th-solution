@@ -53,3 +53,6 @@ all software dependencies are listed inside `requirements.txt`, we did not do an
 
 ## Configuration Files
 - `config.yaml` is the base config for tiny and medium unet models. As there's a lot of field in there, please refer to the comments inside the config file to see what each field does
+- `sumo/pretraining.yaml` is the config for pretraining big-unet models
+- `sumo/finetune_denoised.yaml` is the config for finetuning big-unet models on denoised tomograms
+- `sumo/finetune_all.yaml` is the config for finetuning big-unet models on all tomograms
