@@ -54,3 +54,11 @@ logging:
 
 checkpoints:
   dir: ./checkpoints
+
+
+inference:
+  tiny_unet: ./checkpoints/tiny-unet/tiny_unet_soup.pth
+  medium_unet: ./checkpoints/medium-unet/medium_unet_soup.pth
+  large_unet: ./checkpoints/large-unet/large_unet-soup-folds-69-86-99.pth
+  large_unet_other_tomo: ./checkpoints/large-unet/large_unet-ema-soup.pth
+  device_id: 0
