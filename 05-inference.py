@@ -265,8 +265,6 @@ if __name__ == "__main__":
     cfg = get_cfg("./config.yml")
     seed_everything(cfg.task.seed)
 
-    write_copick("test_copick.config")
-
     model_specs = [
         ModelSpec(cfg.inference.tiny_unet, model_config_one, False),
         ModelSpec(cfg.inference.medium_unet, model_config_four, False),

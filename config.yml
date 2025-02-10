@@ -90,9 +90,20 @@ checkpoints:
   dir: ./checkpoints
 
 
+# inference config
 inference:
+
+  # path to the checkpoint of tiny-unet soup
   tiny_unet: ./checkpoints/tiny-unet/tiny_unet_soup.pth
+
+  # path to the checkpoint of medium-unet soup
   medium_unet: ./checkpoints/medium-unet/medium_unet_soup.pth
-  large_unet: ./checkpoints/large-unet/large_unet-soup-folds-69-86-99.pth
-  large_unet_other_tomo: ./checkpoints/large-unet/large_unet-ema-soup.pth
+
+  # path to the checkpoint of large_unet soup
+  large_unet: ./sumo/checkpoint_finetune_denoised/checkpoint_finetune_denoised_soup.pth 
+
+  # path to the checkpoint of other tomo large_unet soup
+  large_unet_other_tomo: ./sumo/checkpoint_finetune_all/checkpoint_finetune_all_soup.pth
+
+  # device id on which to load the models and perform the inference
   device_id: 0

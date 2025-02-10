@@ -30,5 +30,3 @@ python3 sumo/train.py --config-name=finetune_denoised --val=TS_99_9
 python3 sumo/train.py --config-name=finetune_all --val=TS_69_2
 python3 sumo/train.py --config-name=finetune_all --val=TS_86_3
 python3 sumo/train.py --config-name=finetune_all --val=TS_99_9
-
-python3 sumo/create_model_soup.py

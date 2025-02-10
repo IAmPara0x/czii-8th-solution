@@ -16,7 +16,7 @@ learning_rate: 0.001  # AdamW learning rate
 num_epochs: 2000  # max number of epochs
 batch_size_train: 1  # number of tomograms to read on each training batch
 batch_size_valid: 2  # number of tomograms to read on each validation batch
-num_workers: 1  # dataloader number of workers
+num_workers: 0  # dataloader number of workers
 patience: 30  # patience for early stopping and the ReduceLROnPlateau scheduler
 load_from_checkpoint_dir: null  # if not null, training will resume from the checkpoint in that dir
 checkpoint_dir_name: "checkpoint_pretraining"  # where to write the trained checkpoints to

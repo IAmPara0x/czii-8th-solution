@@ -11,6 +11,7 @@ pip3 install -r requirements.txt
 ```bash
 ./get-data.sh # to get the data to train the models
 ./train.sh # to train the models
+./soup.sh # to create model soup
 ```
 #### Output Artifacts
 - tiny unet model soup = `checkpoints/tiny-unet/`
@@ -31,8 +32,20 @@ pip3 install -r requirements.txt
   - create model soup for each model trained
 
 #### Key Assumptions
+- we assume that user has the kaggle api setup as we use them to get the data from kaggle
 - the data directory `data/` is empty before `./get-data.sh` is run
 - all checkpoints directories are empty before any trainings are run
+
+
+### Inference
+
+```bash
+python ./05-inference.py # run the command for inference
+```
+
+- For inference all the tomograms should be placed under ./data/test/static/ folder
+- The folder is not created by default and must be created by the user
+- The result of inference is submission.csv
 
 ---
 
@@ -44,7 +57,7 @@ pip3 install -r requirements.txt
 | IAmParadox           | Ubuntu                      | 64Gb              | RTX 4090            |
 | sirapoabchaikunsaeng | Ubuntu 22.04 + Ubuntu 24.04 | 64Gb + 500Gb Swap | RTX 3090 + RTX 4090 |
 | sersasj              | Kaggle Kernel               | -                 | 2x T4               |
-| itsuki9180           |                             |                   |                     |
+| itsuki9180           |  TBD                        |  TBD              |  TBD                |
 
 ## Software
 all software dependencies are listed inside `requirements.txt`, we did not do any additional software installations other than cuda and gpu drivers
