@@ -1,0 +1,18 @@
+torch==2.5.1
+lightning==2.5.0.post0
+
+monai==1.4.0
+
+cupy-cuda12x==13.3.0
+cucim-cu12==24.12.0
+scikit-image==0.24.0
+scipy==1.14.1
+
+numpy==1.26.4
+pandas==2.2.3
+
+omegaconf==2.3.0
+tqdm==4.67.1
+
+copick==0.8.0 
+copick-utils @ git+https://github.com/copick/copick-utils.git@d72192abb2d18dcd0ff8caa749f2327cf24ce894
