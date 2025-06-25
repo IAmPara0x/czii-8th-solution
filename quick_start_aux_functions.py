@@ -106,7 +106,7 @@ def load_models(model_specs, device_id: int):
         model = Model(**model_spec.model_config, use_ema=model_spec.use_ema)
 
         # Load state dict
-        checkpoint = torch.load(model_spec.model_path)
+        checkpoint = torch.load(model_spec.model_path, weights_only=False)
         if "state_dict" in checkpoint:
             print("found state_dict key, loading state_dict")
             model.load_state_dict(checkpoint["state_dict"], strict=False)  # strict=False for backward compat with those without ema_model
@@ -219,7 +219,7 @@ def inference_on_runs(runs: list, device_number: int, model_specs: list, tomo_ty
         start = time.time()
 
         tomo = run.get_voxel_spacing(10)
-        tomo = tomo.get_tomogram(tomo_type).numpy()
+        tomo = tomo.get_tomograms(tomo_type)[0].numpy()
 
         with torch.cuda.device(f"cuda:{device_number}"):
             with cp.cuda.Device(device_number):
